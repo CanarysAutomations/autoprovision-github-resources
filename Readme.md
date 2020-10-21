@@ -23,6 +23,11 @@ The script sends four requests to separate GitHub's api endpoints to create the 
 - Repository Name and description to be given
 - Project name to be added to the repository
 - Repository Permissions to be given
+- Organization Name and GitHub PAT
+
+#### Run With Powershell
+
+Download the script to a directory and navigate to the directory in powershell
 
 
 
