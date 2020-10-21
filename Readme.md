@@ -43,6 +43,25 @@ By default ToDo, InProgress and Done columns will be added to the project if no 
 - Only one repository permission parameter is accepted. Another script can be used to vary the permissions
 - The Project Columns Will be added with no automation enabled.
 
+## Teams-Repository Access
+
+### Overview
+
+Using this script bulk repository access can be given to the respective teams. With an Excel file as Input, the permissions are granted to the teams.
+
+#### Sample Excel File
+
+![img](./images/excel-window.png)
+
+### Pre-requisites
+
+- Excel File with Team Names, repositories and permissions. 
+- GitHub PAT and Organization name
+- PAT Token must be authorized to access the required organization
+
+
+
+
 
 
 
