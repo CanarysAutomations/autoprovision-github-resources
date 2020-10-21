@@ -29,6 +29,22 @@ The script sends four requests to separate GitHub's api endpoints to create the 
 
 Download the script to a directory and navigate to the directory in powershell
 
+```
+.\git_autocreate.ps1 -UserToken ********* -Organization ******* -RepoName New-Test-Repo_5 -RepoDescription Test Repo -RepoPermission admin -ProjectName Project_1 -Teams NewTeam_1,NewTeam_2 -Columns ToDo,Doing,Done
+```
+![img](./images/powershell-window.png)
+
+#### Project Columns
+
+By default ToDo, InProgress and Done columns will be added to the project if no parameters are given when executing the script. The Column names can be changed by adding new column names in Columns Parameter
+
+### Note
+
+- Only one repository permission parameter is accepted. Another script can be used to vary the permissions
+- The Project Columns Will be added with no automation enabled.
+
+
+
 
 
 

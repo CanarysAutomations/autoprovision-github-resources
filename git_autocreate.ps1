@@ -6,7 +6,8 @@
 [string]$RepoDescription = "Default",
 [string]$RepoPermission = "Default",
 [string]$ProjectName ="Default",
-[string]$Teamname = "Default")
+[string[]]$Teams = @(),
+[string[]]$Columns = @('ToDo','InProgress','Done'))
 
 $head = @{
 
@@ -21,16 +22,15 @@ $projectheader=@{
 
 }
 
-#$Userlist = @('EAAdmin','OSS-Dev')
 
-$hash = @{
+$RepoDetails = @{
 
     name=$RepoName
     description=$RepoDescription
 
 }
 
-$body = $hash | ConvertTo-Json
+$body = $RepoDetails | ConvertTo-Json
 
 $createreporequest=@{
 
@@ -44,6 +44,7 @@ $createreporequest=@{
 
 $gitobject= Invoke-RestMethod @createreporequest
 
+Write-Host
 Write-Host  "Give repository access to a team"
 Write-Host  "================================"
 
@@ -59,29 +60,34 @@ $repoparams=@{
 
 $repobody=$repoparams | ConvertTo-Json
 
-$team = $Teamname.ToLower();
+foreach($i in $Teams)
+{
 
-$repoaccessrequest=@{
+    $team = $i.ToLower();
 
-        Uri = "https://api.github.com/orgs/$Organization/teams/$team/repos/$Organization/$repo" 
-        Method = "PUT"
-        body = $repobody 
-        ContentType = "application/json"
-        Headers = $head
+    $repoaccessrequest=@{
 
+            Uri = "https://api.github.com/orgs/$Organization/teams/$team/repos/$Organization/$repo" 
+            Method = "PUT"
+            body = $repobody 
+            ContentType = "application/json"
+            Headers = $head
+
+    }
+
+    $gitobject_2= Invoke-RestMethod @repoaccessrequest
+
+    Write-Host "`n"("Team " + $team + " Has been given Access to " + "$RepoName")
 }
 
-$gitobject_2= Invoke-RestMethod @repoaccessrequest
-
-Write-Host "`n"("Team " + $TeamName + " Has been given Access to " + "$RepoName")
-
+Write-Host 
 Write-Host   "Create a project for the repository"
 Write-Host   "==================================="
 
 $projectparams=@{
 
     name=$ProjectName
-    body="created for repo"+$repo
+    body="created for repo "+$repo
 
 }
 
@@ -100,15 +106,15 @@ $createprojectrequest=@{
 $gitObject_3= Invoke-RestMethod @createprojectrequest
 
 Write-Host "`n"($ProjectName + " Project is Created")
+Write-Host
 
 Write-Host  "Adding the project Columns"
 Write-Host  "=========================="
+Write-Host
 
-$Columns=@('ToDo','InProgress','Done')
+#$Columns=@('ToDo','InProgress','Done')
 
 $projectID = $gitObject_3.id
-
-Write-Host $projectID
 
 foreach($j IN $Columns)
 {
@@ -127,9 +133,10 @@ foreach($j IN $Columns)
 
         }
 
-        $gitObject3= Invoke-RestMethod @createprojectcolumnrequest
+        $gitObject_4= Invoke-RestMethod @createprojectcolumnrequest
 
 }
 
-Write-Host "Project Columns are added" 
+ Write-Host  "Project Columns are added" 
+ Write-Host 
 
