@@ -56,8 +56,22 @@ Using this script bulk repository access can be given to the respective teams. W
 ### Pre-requisites
 
 - Excel File with Team Names, repositories and permissions. 
-- GitHub PAT and Organization name
 - PAT Token must be authorized to access the required organization
+
+#### Required Inputs
+
+- Excel file source
+- Authorized GitHub PAT
+- Organization Name
+- Worksheet name where the data is present
+
+#### Run With Powershell
+
+Download the script to a directory and navigate to the directory in powershell
+
+```
+.\Teamsrepoaccess.ps1 -UserToken ************ -Organization ************ -ExcelSourceDir D:\team_permissions.xlsx -WorkSheetName Sheet1
+```
 
 
 
