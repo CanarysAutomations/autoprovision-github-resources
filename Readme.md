@@ -65,13 +65,12 @@ Using this script bulk repository access can be given to the respective teams. W
 - Organization Name
 - Worksheet name where the data is present
 
-#### Run With Powershell
+#### Run With cmd
 
-Download the script to a directory and navigate to the directory in powershell
+Download the exe and run it, specify the required inputs 
 
-```
-.\Teamsrepoaccess.ps1 -UserToken ************ -Organization ************ -ExcelSourceDir D:\team_permissions.xlsx -WorkSheetName Sheet1
-```
+![img](./images/cli-window.png)
+
 
 
 
