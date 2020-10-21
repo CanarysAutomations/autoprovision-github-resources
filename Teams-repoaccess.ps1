@@ -1,16 +1,15 @@
-﻿param(
-[string]$UserToken="Default",
-[string]$Organization="Default",
-[string]$ExcelSourceDir="Default",
-[string]$WorkSheetName = "Default")
+﻿$UserToken = Read-Host -Prompt 'Input your GitHub Token'
+$Organization = Read-Host -Prompt 'Input your GitHub Organization'
+$ExcelSourceDir = Read-Host -Prompt 'Input your Excel Source'
+$WorkSheetName = Read-Host -Prompt 'Specify the worksheet name'
 
 $head = @{
-Authorization = 'Bearer ' + $UserToken
-Accept ="application/vnd.github.nebula-preview+json"
+
+	Authorization = 'Bearer ' + $UserToken
+	Accept ="application/vnd.github.nebula-preview+json"
+	
 }
 
-#$ExcelSourceDir = "D:\team_permissions.xlsx"
-#$WorkSheetName = "Sheet1"
 
 $excel = New-Object -com Excel.Application
 
