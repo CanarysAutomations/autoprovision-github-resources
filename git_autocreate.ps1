@@ -1,13 +1,27 @@
-﻿param(
-#[Parameter(Mandatory=$true)][string]$entserver = "Default",
-[Parameter(Mandatory=$true)][string]$UserToken = "Default",
-[string]$Organization = "Default",
-[string]$RepoName ="Default",
-[string]$RepoDescription = "Default",
-[string]$RepoPermission = "Default",
-[string]$ProjectName ="Default",
-[string[]]$Teams = @(),
-[string[]]$Columns = @('ToDo','InProgress','Done'))
+﻿#param(
+#[Parameter(Mandatory=$true)][string]$UserToken = "Default",
+#[string]$Organization = "Default",
+#[string]$RepoName ="Default",
+#[string]$RepoDescription = "Default",
+#[string]$RepoPermission = "Default",
+#[string]$ProjectName ="Default",
+#[string[]]$Teams = @(),
+#[string[]]$Columns = @('ToDo','InProgress','Done'))
+
+[string[]] $TeamNames= @()
+[string[]] $Columns= @()
+
+$UserToken = Read-Host -Prompt 'Input your GitHub Token'
+$Organization = Read-Host -Prompt 'Input your GitHub Organization'
+$RepoName = Read-Host -Prompt 'Input your Repository Name'
+$RepoDescription = Read-Host -Prompt 'Add the Repository Description'
+$RepoPermission = Read-Host -Prompt 'Add the Repo Permissions to be given'
+$TeamNames = Read-Host -Prompt 'Add the teams to provide the repository access'
+$ProjectName = Read-Host -Prompt 'Give the Project Name for the Repository'
+$Columns = Read-Host -Prompt 'Provide the Project Column Names to be Created'
+
+
+
 
 $head = @{
 
@@ -60,14 +74,18 @@ $repoparams=@{
 
 $repobody=$repoparams | ConvertTo-Json
 
+$Teams=$TeamNames.split(',')
+
 foreach($i in $Teams)
 {
 
     $team = $i.ToLower();
 
+    $teamname = $team -replace ' ','-'
+
     $repoaccessrequest=@{
 
-            Uri = "https://api.github.com/orgs/$Organization/teams/$team/repos/$Organization/$repo" 
+            Uri = "https://api.github.com/orgs/$Organization/teams/$teamname/repos/$Organization/$repo" 
             Method = "PUT"
             body = $repobody 
             ContentType = "application/json"
@@ -77,7 +95,7 @@ foreach($i in $Teams)
 
     $gitobject_2= Invoke-RestMethod @repoaccessrequest
 
-    Write-Host "`n"("Team " + $team + " Has been given Access to " + "$RepoName")
+    Write-Host "`n"("Team " + $teamname + " Has been given Access to " + "$RepoName")
 }
 
 Write-Host 
@@ -116,7 +134,9 @@ Write-Host
 
 $projectID = $gitObject_3.id
 
-foreach($j IN $Columns)
+$ColumnNames = $Columns.split(',')
+
+foreach($j IN $ColumnNames)
 {
 
         $Columnparams=@{name=$j}
