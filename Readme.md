@@ -11,3 +11,7 @@ A series of powershell scripts to help interact with github's repositories and o
 - Excel File with Team Names, repositories and permissions. 
 - GitHub PAT Token must be authorized to access the required organization
 - Existing teams in the organization will only be considered
+
+### Usage Instructions
+
+For Instructions on how to use the tool, please [click here](https://github.com/CanarysAutomations/github-autocreate-scripts/wiki)
