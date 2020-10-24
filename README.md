@@ -12,6 +12,6 @@ A set of tools to help interact with github's repositories and organizations. Wi
 - GitHub PAT Token must be authorized to access the required organization
 - Existing teams in the organization will only be considered
 
-### Usage Instructions
+### Usage Instructions :memo:
 
 For Instructions on how to use the tool, please [click here](https://github.com/CanarysAutomations/github-autocreate-scripts/wiki)
