@@ -6,7 +6,7 @@ A set of tools to help interact with github's repositories and organizations. Wi
 
 ## GitHub REST API
 
-The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints are made available by GitHub to alter resources like repositories, teams, projects and make organization level changes.
+The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints are made available by GitHub to alter resources like repositories, teams, projects and make organization level changes. For further reading on the GitHub's REST API please [click here](https://docs.github.com/en/free-pro-team@latest/rest/overview)
 
 ## Pre-requisites
 
