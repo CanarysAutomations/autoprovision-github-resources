@@ -22,4 +22,4 @@ For Instructions on how to use the tool, please [click here](https://github.com/
 
 ## Current Tool Limitations  :x: :x:
 
-- GitHub might change the endpoints without notice in future. Also GitHub is moving its API Development to GRAPH QL completely in future.
+- GitHub might change its rest endpoints used in the tool without notice in future.
