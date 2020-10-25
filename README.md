@@ -1,7 +1,5 @@
 # Auto-Create GitHub Resources
 
-## Overview
-
 A collection of tools to communicate with the repositories and organisations of GitHub. The tools can help with few inputs to
 - create a repository
 - Giving teams access to such repositories
