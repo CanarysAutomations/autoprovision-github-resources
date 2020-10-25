@@ -20,7 +20,7 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 
 ## Usage Instructions :memo:
 
-For instructions on how to use the tool, please [click here](https://github.com/CanarysAutomations/github-autocreate-scripts/wiki)
+For instructions on how to use the tool, please [click here](https://github.com/CanarysAutomations/autocreate-github-resources/wiki)
 
 ## Current Tool Limitations  :x: :x:
 
