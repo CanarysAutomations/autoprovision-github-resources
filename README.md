@@ -1,6 +1,6 @@
 # Autoprovision ⚙ GitHub Resources
 
-The tool will communicate with the repositories and organizations of GitHub. The [exe](https://github.com/CanarysAutomations/autocreate-github-resources/releases) file will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
+The tool will communicate with the repositories and organizations of GitHub. The [exe](https://github.com/CanarysAutomations/autocreate-github-resources/releases) will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
 
 - **Create a repository**- An empty repository will be created
 
