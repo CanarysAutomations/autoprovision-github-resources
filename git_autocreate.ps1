@@ -1,26 +1,38 @@
-﻿#param(
-#[Parameter(Mandatory=$true)][string]$UserToken = "Default",
-#[string]$Organization = "Default",
-#[string]$RepoName ="Default",
-#[string]$RepoDescription = "Default",
-#[string]$RepoPermission = "Default",
-#[string]$ProjectName ="Default",
-#[string[]]$Teams = @(),
-#[string[]]$Columns = @('ToDo','InProgress','Done'))
+﻿
+Write-Host                  "   _____ _ _   _   _       _            ___        _              _____                _     "  
+Write-Host                  "  |  __ (_) | | | | |     | |          / _ \      | |            /  __ \              | |    "  
+Write-Host                  "  | |  \/_| |_| |_| |_   _| |__ ______/ /_\ \_   _| |_ ___ ______| /  \/_ __ ___  __ _| |_ ___" 
+Write-Host                  "  | | __| | __|  _  | | | | '_ \______|  _  | | | | __/ _ \______| |   | '__/ _ \/ _` | __/ _ \"
+Write-Host                  "  | |_\ \ | |_| | | | |_| | |_) |     | | | | |_| | || (_) |     | \__/\ | |  __/ (_| | ||  __/"
+Write-Host                  "   \____/_|\__\_| |_/\__,_|_.__/      \_| |_/\__,_|\__\___/       \____/_|  \___|\__,_|\__\___|"
+Write-Host                                                                                             
+                                                                                             
+
 
 [string[]] $TeamNames= @()
 [string[]] $Columns= @()
 
-$UserToken = Read-Host -Prompt 'Input your GitHub Token'
-$Organization = Read-Host -Prompt 'Input your GitHub Organization'
-$RepoName = Read-Host -Prompt 'Input your Repository Name'
+$UserToken = Read-Host -Prompt 'GitHub Token'
+$Organization = Read-Host -Prompt 'GitHub Organization'
+$RepoName = Read-Host -Prompt 'Repository Name'
 $RepoDescription = Read-Host -Prompt 'Add the Repository Description'
-$RepoPermission = Read-Host -Prompt 'Add the Repo Permissions to be given'
-$TeamNames = Read-Host -Prompt 'Add the teams to provide the repository access'
-$ProjectName = Read-Host -Prompt 'Give the Project Name for the Repository'
-$Columns = Read-Host -Prompt 'Provide the Project Column Names to be Created'
+$ProjectName = Read-Host -Prompt 'Project to be created for the Repository'
+$Columns = Read-Host -Prompt 'Project Column Names to be Created'
+$ExcelSourceDir = Read-Host -Prompt 'Excel Source'
+$WorkSheetName = Read-Host -Prompt 'Specify the worksheet name'
+
+$excel = New-Object -com Excel.Application
+
+$wbook = $excel.workbooks.open($ExcelSourceDir)
 
 
+$worksheet = $wbook.Worksheets.Item($WorkSheetName)
+
+$maxrows = ($worksheet.UsedRange.Rows).Count
+
+$wbobject = New-Object -TypeName psobject
+$wbobject | Add-Member -MemberType NoteProperty -Name Team -Value $null
+$wbobject | Add-Member -MemberType NoteProperty -Name Permissions -Value $null
 
 
 $head = @{
@@ -58,34 +70,42 @@ $createreporequest=@{
 
 $gitobject= Invoke-RestMethod @createreporequest
 
-Write-Host
-Write-Host  "Give repository access to a team"
-Write-Host  "================================"
+$repository_name = $gitobject.name.ToUpper()
 
-Write-Host "`n"("Repository Created " + $gitobject.name)
+
+Write-host
+Write-Host "$repository_name repository is created "
+
+Write-Host
+Write-Host "Give repository access to a team"
+Write-Host "================================"
+
 
 $repo=$gitobject.name
 
-$repoparams=@{
 
-    permission=$RepoPermission
-
-}
-
-$repobody=$repoparams | ConvertTo-Json
-
-$Teams=$TeamNames.split(',')
-
-foreach($i in $Teams)
+for ($i = 2; $i -le $maxrows; $i++)
 {
+    $wbobject.Team = $worksheet.Cells.item($i,1).Text.ToLower();
+	$wbobject.Permissions = $worksheet.Cells.item($i,2).Text.ToLower();
 
-    $team = $i.ToLower();
+    $repository = $repo
+    $team = $wbobject.Team
+    $repopermission = $wbobject.Permissions
 
     $teamname = $team -replace ' ','-'
+	
+	$repoparams=@{
+
+    permission=$repopermission
+
+    }
+
+	$repobody=$repoparams | ConvertTo-Json
 
     $repoaccessrequest=@{
 
-            Uri = "https://api.github.com/orgs/$Organization/teams/$teamname/repos/$Organization/$repo" 
+            Uri = "https://api.github.com/orgs/$Organization/teams/$teamname/repos/$Organization/$repository" 
             Method = "PUT"
             body = $repobody 
             ContentType = "application/json"
@@ -95,12 +115,15 @@ foreach($i in $Teams)
 
     $gitobject_2= Invoke-RestMethod @repoaccessrequest
 
-    Write-Host "`n"("Team " + $teamname + " Has been given Access to " + "$RepoName")
+    $team_newname = $team.ToUpper()
+    $repo_newname = $repo.ToUpper()
+
+    Write-Host "Team $team_newname has been given $repopermission to $repo_newname"
 }
 
 Write-Host 
-Write-Host   "Create a project for the repository"
-Write-Host   "==================================="
+Write-Host "Create a project for the repository"
+Write-Host "==================================="
 
 $projectparams=@{
 
@@ -123,11 +146,11 @@ $createprojectrequest=@{
 
 $gitObject_3= Invoke-RestMethod @createprojectrequest
 
-Write-Host "`n"($ProjectName + " Project is Created")
+Write-Host "$ProjectName Project is Created"
 Write-Host
 
-Write-Host  "Adding the project Columns"
-Write-Host  "=========================="
+Write-Host "Adding the project Columns"
+Write-Host "=========================="
 Write-Host
 
 #$Columns=@('ToDo','InProgress','Done')
@@ -157,6 +180,6 @@ foreach($j IN $ColumnNames)
 
 }
 
- Write-Host  "Project Columns are added" 
+ Write-Host "Project Columns are added" 
  Write-Host 
 

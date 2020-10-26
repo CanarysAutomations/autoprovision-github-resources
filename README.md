@@ -1,11 +1,24 @@
-# Auto-Create GitHub Resources
+## Auto-Create GitHub Resources
 
-A collection of tools to communicate with the repositories and organisations of GitHub. The tools can help with few inputs to
-- create a repository
-- Giving teams access to such repositories
-- create projects for those repositories
+The tool will communicate with the repositories and organisations of GitHub. With each release, the exe file to auto build GitHub resources, will be available. The purpose of this tool is to limit manual work as much as possible. The tool with the help of few inputs will  
 
-With each release, the two exe files, one for bulk access to teams and auto build github resources, will be available.
+#### Create a repository
+
+An empty repository will be created
+
+#### Repository Access
+
+Based on the excel file input, the teams will be given access to the created repository 
+
+#### Project 
+
+An Empty project will be created for the repository with a basic kanban board.
+
+
+### Advantages
+
+- This tool can be used as a template when repositories have to be created for an organization.
+- Automate your repository creation with very few inputs
 
 ## GitHub REST API
 
@@ -15,7 +28,7 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 
 - only existing teams in the organization will be considered
 - Admin access to the organization for creating the repositories
-- Excel File with Team Names, repositories and permissions
+- Excel File with Team Names and permissions
 - GitHub PAT Token must be authorized to access the required organization
 
 ## Usage Instructions :memo:
