@@ -1,21 +1,14 @@
-## Auto-Create GitHub Resources
+# Auto-Create GitHub Resources
 
-The tool will communicate with the repositories and organisations of GitHub. With each release, the exe file to auto build GitHub resources, will be available. The purpose of this tool is to limit manual work as much as possible. The tool with the help of few inputs will  
+The tool will communicate with the repositories and organzations of GitHub. The exe file will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
 
-#### Create a repository
+- **Create a repository**- An empty repository will be created
 
-An empty repository will be created
+- **Repository Access**- Based on the excel file input, the teams will be given access to the created repository 
 
-#### Repository Access
+- **Project**- An Empty project will be created for the repository with a basic kanban board.
 
-Based on the excel file input, the teams will be given access to the created repository 
-
-#### Project 
-
-An Empty project will be created for the repository with a basic kanban board.
-
-
-### Advantages
+## Benefits
 
 - This tool can be used as a template when repositories have to be created for an organization.
 - Automate your repository creation with very few inputs
