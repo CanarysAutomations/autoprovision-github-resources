@@ -24,7 +24,7 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 - Excel File with Team Names and permissions
 - GitHub PAT Token must be authorized to access the required organization
 
-## Download
+## Download :arrow_down:
 
 Download the tool from [here](https://github.com/CanarysAutomations/autoprovision-github-resources/releases).
 
