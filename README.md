@@ -1,17 +1,17 @@
 # Auto-Create GitHub Resources
 
-The tool will communicate with the repositories and organzations of GitHub. The exe file will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
+The tool will communicate with the repositories and organzations of GitHub. The [exe](https://github.com/CanarysAutomations/autocreate-github-resources/releases) file will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
 
 - **Create a repository**- An empty repository will be created
 
-- **Repository Access**- Based on the excel file input, the teams will be given access to the created repository 
+- **Repository Access**- The teams will be given access to the created repository based on the excel file input
 
-- **Project**- An Empty project will be created for the repository with a basic kanban board.
+- **Project**- An empty project will be created for the repository with a pre-configured **Basic Kanban** template with columns for **To Do**, **In progress**, and **Done**
 
 ## Benefits
 
-- This tool can be used as a template when repositories have to be created for an organization.
-- Automate your repository creation with very few inputs
+- This tool can be used as a template when repositories have to be created for an organization
+- Automate the creation of repositories with very few inputs
 
 ## GitHub REST API
 
@@ -19,7 +19,7 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 
 ## Prerequisites
 
-- only existing teams in the organization will be considered
+- Only current organisational teams will be considered
 - Admin access to the organization for creating the repositories
 - Excel File with Team Names and permissions
 - GitHub PAT Token must be authorized to access the required organization
