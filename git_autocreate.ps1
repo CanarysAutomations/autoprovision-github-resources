@@ -12,14 +12,24 @@ Write-Host
 [string[]] $TeamNames= @()
 [string[]] $Columns= @()
 
-$UserToken = Read-Host -Prompt 'GitHub Token'
+$PATToken = Read-Host -Prompt 'GitHub Token' -AsSecureString
 $Organization = Read-Host -Prompt 'GitHub Organization'
 $RepoName = Read-Host -Prompt 'Repository Name'
+$Repository_Visibility = Read-Host -Prompt 'Repository Visibility'
 $RepoDescription = Read-Host -Prompt 'Add the Repository Description'
 $ProjectName = Read-Host -Prompt 'Project to be created for the Repository'
 $Columns = Read-Host -Prompt 'Project Column Names to be Created'
 $ExcelSourceDir = Read-Host -Prompt 'Excel Source'
 $WorkSheetName = Read-Host -Prompt 'Specify the worksheet name'
+
+if($Repository_Visibility -eq "public")
+{
+    $type="public"
+}else{
+    $type="private"
+}
+
+$UserToken =[Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($PATToken))
 
 $excel = New-Object -com Excel.Application
 
@@ -38,6 +48,7 @@ $wbobject | Add-Member -MemberType NoteProperty -Name Permissions -Value $null
 $head = @{
 
     Authorization = 'Bearer ' + $UserToken
+    Accept="application/vnd.github.nebula-preview+json"
 
 }
 
@@ -53,6 +64,7 @@ $RepoDetails = @{
 
     name=$RepoName
     description=$RepoDescription
+    visibility=$type
 
 }
 
@@ -68,13 +80,23 @@ $createreporequest=@{
 
 }
 
-$gitobject= Invoke-RestMethod @createreporequest
+try {
 
-$repository_name = $gitobject.name.ToUpper()
+    $gitobject= Invoke-RestMethod @createreporequest
 
 
-Write-host
-Write-Host "$repository_name repository is created "
+
+    $repository_name = $gitobject.name.ToUpper()
+
+
+    Write-host
+    Write-Host "$repository_name repository is created " 
+
+}catch{
+
+     Write-Host "Unable to Create Repository:" $_.Exception.Response.StatusDescription  -ForegroundColor Red
+
+}
 
 Write-Host
 Write-Host "Give repository access to a team"
@@ -83,27 +105,28 @@ Write-Host "================================"
 
 $repo=$gitobject.name
 
+try {
 
-for ($i = 2; $i -le $maxrows; $i++)
-{
-    $wbobject.Team = $worksheet.Cells.item($i,1).Text.ToLower();
-	$wbobject.Permissions = $worksheet.Cells.item($i,2).Text.ToLower();
+    for ($i = 2; $i -le $maxrows; $i++)
+    {
+        $wbobject.Team = $worksheet.Cells.item($i,1).Text.ToLower();
+	    $wbobject.Permissions = $worksheet.Cells.item($i,2).Text.ToLower();
 
-    $repository = $repo
-    $team = $wbobject.Team
-    $repopermission = $wbobject.Permissions
+        $repository = $repo
+        $team = $wbobject.Team
+        $repopermission = $wbobject.Permissions
 
-    $teamname = $team -replace ' ','-'
+        $teamname = $team -replace ' ','-'
 	
-	$repoparams=@{
+	    $repoparams=@{
 
-    permission=$repopermission
+            permission=$repopermission
 
-    }
+        }
 
-	$repobody=$repoparams | ConvertTo-Json
+	    $repobody=$repoparams | ConvertTo-Json
 
-    $repoaccessrequest=@{
+        $repoaccessrequest=@{
 
             Uri = "https://api.github.com/orgs/$Organization/teams/$teamname/repos/$Organization/$repository" 
             Method = "PUT"
@@ -111,75 +134,103 @@ for ($i = 2; $i -le $maxrows; $i++)
             ContentType = "application/json"
             Headers = $head
 
+        }
+
+        $gitobject_2= Invoke-RestMethod @repoaccessrequest
+
+        $team_newname = $team.ToUpper()
+        $repo_newname = $repo.ToUpper()
+
+        Write-Host "Team $team_newname has been given $repopermission to $repo_newname"
     }
+}catch {
 
-    $gitobject_2= Invoke-RestMethod @repoaccessrequest
-
-    $team_newname = $team.ToUpper()
-    $repo_newname = $repo.ToUpper()
-
-    Write-Host "Team $team_newname has been given $repopermission to $repo_newname"
+     Write-Host "Unable to Provide Repository Access:" $_.Exception.Response.StatusDescription  -ForegroundColor Red
 }
 
 Write-Host 
 Write-Host "Create a project for the repository"
 Write-Host "==================================="
 
-$projectparams=@{
-
-    name=$ProjectName
-    body="created for repo "+$repo
-
-}
-
-$projectdetails = $projectparams | ConvertTo-Json
-
-$createprojectrequest=@{
-
-        Uri = "https://api.github.com/repos/$Organization/$repo/projects" 
-        Method = "Post"
-        body = $projectdetails
-        ContentType = "application/json"
-        Headers = $projectheader
-
-}
-
-$gitObject_3= Invoke-RestMethod @createprojectrequest
-
-Write-Host "$ProjectName Project is Created"
-Write-Host
-
-Write-Host "Adding the project Columns"
-Write-Host "=========================="
-Write-Host
-
-#$Columns=@('ToDo','InProgress','Done')
-
-$projectID = $gitObject_3.id
-
-$ColumnNames = $Columns.split(',')
-
-foreach($j IN $ColumnNames)
+if ($ProjectName -eq $null -or $ColumnNames -eq $null)
 {
+    Write-Host "Project Name or Columns not Specified. Skipping Project Creation"
+}
 
-        $Columnparams=@{name=$j}
+else {
 
-        $Columnnames = $Columnparams | ConvertTo-Json
+    $projectparams=@{
 
-        $createprojectcolumnrequest=@{
+        name=$ProjectName
+        body="created for repo "+$repo
 
-            Uri = "https://api.github.com/projects/$projectID/columns" 
-            Method = "Post"
-            body = $Columnnames
-            ContentType = "application/json"
-            Headers = $projectheader
+    }
+
+    $projectdetails = $projectparams | ConvertTo-Json
+
+    try{
+
+            $createprojectrequest=@{
+
+                Uri = "https://api.github.com/repos/$Organization/$repo/projects" 
+                Method = "Post"
+                body = $projectdetails
+                ContentType = "application/json"
+                Headers = $projectheader
+
+            }
+
+            $gitObject_3= Invoke-RestMethod @createprojectrequest
+
+            Write-Host "$ProjectName Project is Created"
+            Write-Host
+
+       }catch{
+
+         Write-Host "Unable to Create the Repository Project:" $_.Exception.Response.StatusDescription  -ForegroundColor Red
+
+       }
+
+    Write-Host "Adding the project Columns"
+    Write-Host "=========================="
+    Write-Host
+
+
+    $projectID = $gitObject_3.id
+
+    $ColumnNames = $Columns.split(',')
+
+    try {
+
+        foreach($j IN $ColumnNames)
+        {
+
+            $Columnparams=@{name=$j}
+
+            $Columnnames = $Columnparams | ConvertTo-Json
+
+            $createprojectcolumnrequest=@{
+
+                Uri = "https://api.github.com/projects/$projectID/columns" 
+                Method = "Post"
+                body = $Columnnames
+                ContentType = "application/json"
+                Headers = $projectheader
+
+            }
+
+            $gitObject_4= Invoke-RestMethod @createprojectcolumnrequest
 
         }
 
-        $gitObject_4= Invoke-RestMethod @createprojectcolumnrequest
+        Write-Host "Project Columns are added" 
+        Write-Host 
 
-}
+     }catch{
 
- Write-Host "Project Columns are added" 
- Write-Host 
+         Write-Host "Unable to Create the Requested Project Columns:" $_.Exception.Response.StatusDescription  -ForegroundColor Red
+
+       }
+
+ }
 
