@@ -152,7 +152,7 @@ Write-Host
 Write-Host "Create a project for the repository"
 Write-Host "==================================="
 
-if ($ProjectName -eq $null -or $ColumnNames -eq $null)
+if (!$ProjectName -or !$ColumnNames)
 {
     Write-Host "Project Name or Columns not Specified. Skipping Project Creation"
 }
