@@ -152,12 +152,11 @@ Write-Host
 Write-Host "Create a project for the repository"
 Write-Host "==================================="
 
-if (!$ProjectName -or !$ColumnNames)
+if (!$ProjectName -and !$ColumnNames)
 {
     Write-Host "Project Name or Columns not Specified. Skipping Project Creation"
-}
 
-else {
+} else {
 
     $projectparams=@{
 
@@ -198,7 +197,7 @@ else {
 
     $projectID = $gitObject_3.id
 
-    $ColumnNames = $Columns.split(',')
+    $ColumnNames = $Columns.Split(',')
 
     try {
 
