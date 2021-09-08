@@ -9,7 +9,7 @@ print("  | | __| | __|  _  | | | | '_ \______|  _  | | | | __/ _ \______| |   | 
 print("  | |_\ \ | |_| | | | |_| | |_) |     | | | | |_| | || (_) |     | \__/\ | |  __/ (_| | ||  __/")
 print("   \____/_|\__\_| |_/\__,_|_.__/      \_| |_/\__,_|\__\___/       \____/_|  \___|\__,_|\__\___|")
 print()
-PATToken = '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' #getpass('GitHub Token: ')
+PATToken = '' #getpass('GitHub Token: ')
 Organization = 'GHAPITesting' #input('GitHub Organization: ')
 RepoName = 'test_grenston' #input('Repository Name: ')
 Repository_Visibility = 'private' #input('Repository Visibility: ')
