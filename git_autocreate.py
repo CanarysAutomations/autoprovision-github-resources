@@ -128,7 +128,7 @@ except:
     print(colored("Unable to provide access for {}".format(teamname.upper()),'red'))
 
 if not ProjectName or not Columns:
-    print("\nProject Name or Columns not Specified. Skipping Project Creation")
+    print("\nProject Name or Columns not Specified. Skipping Project Creation\n")
 else:
     projectdetails = {
         'name' : ProjectName,
@@ -152,7 +152,7 @@ else:
             for c in ColumnNames:
                 ColumnParams = { 'name' : c }
                 create_columns_response = post(url=create_columns_req_url, headers=head, data=dumps(ColumnParams))
-            print("Project Columns are added") 
+            print("Project Columns are added\n") 
         except:
             print(colored(create_columns_response.json(),'red'))
 
