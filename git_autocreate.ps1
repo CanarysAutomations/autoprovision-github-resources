@@ -100,7 +100,7 @@ try {
 
 Write-Host
 Write-Host "Give repository access to a team"
-Write-Host "================================"
+Write-Host "================================="
 
 
 $repo=$gitobject.name
