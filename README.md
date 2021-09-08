@@ -4,7 +4,7 @@ The tool will communicate with the repositories and organizations of GitHub. The
 
 - **Create a repository**- An empty repository will be created
 
-- **Repository Access**- The teams will be given access to the created repository based on the excel file input
+- **Repository Access**- The teams will be given access to the created repository based on the csv file input
 
 - **Project**- An empty project will be created for the repository with a pre-configured **Basic Kanban** template with columns for **To Do**, **In progress**, and **Done**
 
@@ -23,10 +23,6 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 - Admin access to the organization for creating the repositories
 - Excel File with Team Names and permissions
 - GitHub PAT Token must be authorized to access the required organization
-
-## Download :arrow_down:
-
-Download the tool from [here](https://github.com/CanarysAutomations/autoprovision-github-resources/releases).
 
 ## Usage Instructions :memo:
 
