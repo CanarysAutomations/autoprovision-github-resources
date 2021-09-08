@@ -1,7 +1,10 @@
 from stdiomask import getpass
-import requests
+from requests import post
+from requests import put
 from json import dumps
 from termcolor import colored
+from csv import DictReader
+
 print("   _____ _ _   _   _       _            ___        _              _____                _     " )
 print("  |  __ (_) | | | | |     | |          / _ \      | |            /  __ \              | |    ")
 print("  | |  \/_| |_| |_| |_   _| |__ ______/ /_\ \_   _| |_ ___ ______| /  \/_ __ ___  __ _| |_ ___")
@@ -16,9 +19,9 @@ Repository_Visibility = 'private' #input('Repository Visibility: ')
 RepoDescription = 'A sample description' #input('Add the Repository Description: ')
 # ProjectName = input('Project to be created for the Repository: ')
 # Columns = input('Project Column Names to be Created: ')
-# ExcelSourceDir = input('Excel Source: ')
-# WorkSheetName = input('Specify the worksheet name: ')
+CsvSource = './testcsv.csv' #input('CSV Source: ')
 
+csvReader = DictReader(open(CsvSource))
 if Repository_Visibility == 'public':
     type='public'
 else:
@@ -35,12 +38,35 @@ RepoDetails = {
     'visibility':type
 }
 
+print()
+print( "Create repository in organization")
+print( "=================================")
+
 req_url = 'https://api.github.com/orgs/' + Organization + '/repos'
 try:
-    gitobject= requests.post(url=req_url, headers=head, data=dumps(RepoDetails))
-    repository_name = gitobject
+    gitobject= post(url=req_url, headers=head, data=dumps(RepoDetails))
+    repository_name = gitobject.json()['name']
     print()
-    print(gitobject.json()['name'],'repository is created') 
+    print(repository_name,'repository is created') 
 
 except Exception as e:
     print(colored("Unable to Create Repository:",'red'),colored(e,'red'))
+
+print()
+print( "Give repository access to a team")
+print( "=================================")
+
+try:
+    for r in csvReader:
+        teamname = r['Team'].replace(' ','-')
+        repopermission = r['Permissions']
+        repobody = {
+            'permission' : repopermission
+        }
+        req_url2 = 'https://api.github.com/orgs/' + Organization + '/teams' + teamname + '/repos' + Organization + '/' + RepoName
+        gitobject_2 = put(url=req_url2, headers=head, data=dumps(repobody))
+        team_newname = teamname.upper()
+        repo_newname = RepoName.upper()
+        print('Team',team_newname,'has been given',repopermission,'to',repo_newname)
+except Exception as e:
+    print(colored("Unable to Provide Repository Access:",'red'),colored(e,'red'))
