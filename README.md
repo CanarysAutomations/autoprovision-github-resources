@@ -1,12 +1,12 @@
 # Autoprovision ⚙ GitHub Resources
 
-The tool will communicate with the repositories and organization apis of GitHub. This tool is intended to restrict manual labour as much as possible. With the help of few inputs the tool will  
+The tool will communicate with the repositories and organizations apis of GitHub. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
 
 - **Create a repository**- An empty repository will be created
 
-- **Repository Access**- The teams will be given access to the created repository based on the csv file input
+- **Repository Access**- The teams will be given access to the created repository based on the excel file input
 
-- **Project**- An empty project will be created for the repository with a pre-configured **Basic Kanban** template with columns for **To Do**, **In progress**, and **Done**
+- **Project**- A project will be created for the repository with the specified column names. Project Input is not Mandatory
 
 ## Benefits
 
