@@ -59,7 +59,7 @@ def initialiseInputs(argumentList):
         else:
             exit("Aborting.......")
     elif len(argumentList) == 16:
-        if set(["-t","-o","-r","-v","-d","-p","-c","-f"]) <= set(argumentList) or set(["--Token ", "--Organization ","--Repository ", "--Visibility ","--Description ","--Project ","--Columns ","--File "]) <= set(argumentList):
+        if set(["-t","-o","-r","-v","-d","-p","-c","-f"]) <= set(argumentList) or set(["--Token", "--Organization","--Repository", "--Visibility","--Description","--Project","--Columns","--File"]) <= set(argumentList):
             inputObject = inputClass(argumentList)
         else:
             print("Refer README for unattended usage. Proper arguments not provided.")
@@ -69,9 +69,10 @@ def initialiseInputs(argumentList):
             else:
                 exit("Aborting.......")
     else:
-        if set(['-t','-o','-r','-v','-d','-f']) <= set(argumentList) or set(["--Token ", "--Organization ","--Repository ", "--Visibility ","--Description ","--File "]) <= set(argumentList):
+        if set(['-t','-o','-r','-v','-d','-f']) <= set(argumentList) or set(["--Token", "--Organization","--Repository", "--Visibility","--Description","--File"]) <= set(argumentList):
             inputObject = inputClass(argumentList) 
         else: 
+            print(argumentList)
             print("Refer README for unattended usage. Proper arguments not provided.")
             choice = input("Enter \"Y\" to input values manually: ")
             if (choice.upper() == "Y"):
