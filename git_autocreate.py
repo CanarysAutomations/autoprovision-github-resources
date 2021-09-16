@@ -33,37 +33,31 @@ class inputClass:
             if len(argumentList) == 16:
                 options = "t:o:r:v:d:p:c:f:"
                 long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","Project =","Columns =","File ="]
-                try:
-                    arguments = getopt(argumentList, options, long_options)
-                    for currentArgument, currentValue in arguments:
-                        if currentArgument in ("-p", "--Project "):
-                            self.ProjectName = currentValue
-                        elif currentArgument in ("-c", "--Columns "):
-                            self.Columns = currentValue
-                except getopt.error as err:
-                    print (str(err))
+                arguments, values = getopt(argumentList, options, long_options)
+                for currentArgument, currentValue in arguments:
+                    if currentArgument in ("-p", "--Project "):
+                        self.ProjectName = currentValue
+                    elif currentArgument in ("-c", "--Columns "):
+                        self.Columns = currentValue
             else:
                 options = "t:o:r:v:d:f:"
                 long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","File ="]
                 self.Columns = None
                 self.ProjectName = None
-            try:
-                arguments = getopt(argumentList, options, long_options)
-                for currentArgument, currentValue in arguments:
-                    if currentArgument in ("-t", "--Token "):
-                        self.PATToken = currentValue                
-                    elif currentArgument in ("-o", "--Organization "):
-                        self.Organization = currentValue               
-                    elif currentArgument in ("-r", "--Repository "):
-                        self.RepoName = currentValue
-                    elif currentArgument in ("-v", "--Visibility "):
-                        self.Repository_Visibility = currentValue
-                    elif currentArgument in ("-d", "--Description "):
-                        self.RepoDescription = currentValue
-                    elif currentArgument in ("-f", "--File "):
-                        self.CsvSource = currentValue
-            except getopt.error as err:
-                print (str(err))
+            arguments, values = getopt(argumentList, options, long_options)
+            for currentArgument, currentValue in arguments:
+                if currentArgument in ("-t", "--Token "):
+                    self.PATToken = currentValue                
+                elif currentArgument in ("-o", "--Organization "):
+                    self.Organization = currentValue               
+                elif currentArgument in ("-r", "--Repository "):
+                    self.RepoName = currentValue
+                elif currentArgument in ("-v", "--Visibility "):
+                    self.Repository_Visibility = currentValue
+                elif currentArgument in ("-d", "--Description "):
+                    self.RepoDescription = currentValue
+                elif currentArgument in ("-f", "--File "):
+                    self.CsvSource = currentValue
 
 
 def initialiseInputs(argumentList):
