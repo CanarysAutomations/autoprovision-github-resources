@@ -1,6 +1,7 @@
 '''
-The tool will communicate with the repositories and organizations of GitHub. The exe will be available for auto provision of GitHub resources with each release. 
-This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will:
+The tool will communicate with the repositories and organizations of GitHub.
+This tool is intended to restrict manual labour as much as possible. 
+The tool with the help of few inputs will:
     1. Create a repository - An empty repository will be created
     2. Repository Access - The teams will be given access to the created repository based on the csv file input
     3. Project - An empty project will be created for the repository with the Columns defined by the user.
