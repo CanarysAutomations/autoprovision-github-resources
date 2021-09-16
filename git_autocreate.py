@@ -6,7 +6,7 @@ from stdiomask import getpass
 from requests import post
 from requests import put
 from termcolor import colored
-
+from sys import exit
 
 print("   _____ _ _   _   _       _            ___        _              _____                _     " )
 print("  |  __ (_) | | | | |     | |          / _ \      | |            /  __ \              | |    ")
@@ -17,64 +17,118 @@ print("   \____/_|\__\_| |_/\__,_|_.__/      \_| |_/\__,_|\__\___/       \____/_
 print()
 
 argumentList = argv[1:]
-
-if len(argumentList) != 16 and len(argumentList) != 12:
+if len(argumentList) == 0:
     PATToken = getpass('GitHub Token: ')
     Organization = input('GitHub Organization: ')
     RepoName = input('Repository Name: ')
     Repository_Visibility = input('Repository Visibility: ')
     RepoDescription = input('Add the Repository Description: ')
-    ProjectName = input('Project to be created for the Repository: ')
-    Columns = input('Project Column Names to be Created: ')
-    CsvSource = input('CSV Source (Use / for path separator): ')
-elif len(argumentList) == 12 and ["-p","-c"] not in argumentList and ["--Project ","--Columns "] not in argumentList:
-    options = "t:o:r:v:d:f:"
-    long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","File ="]
-    Columns = None
-    ProjectName = None
-    try:
-        arguments, values = getopt(argumentList, options, long_options)
-        for currentArgument, currentValue in arguments:
-            if currentArgument in ("-t", "--Token "):
-                PATToken = currentValue              
-            elif currentArgument in ("-o", "--Organization "):
-                Organization = currentValue               
-            elif currentArgument in ("-r", "--Repository "):
-                RepoName = currentValue
-            elif currentArgument in ("-v", "--Visibility "):
-                Repository_Visibility = currentValue
-            elif currentArgument in ("-d", "--Description "):
-                RepoDescription = currentValue
-            elif currentArgument in ("-f", "--File "):
-                CsvSource = currentValue
-    except getopt.error as err:
-        print (str(err))    
-
+    ProjectName = input('Project to be created for the Repository. Press ENTER if not required: ')
+    if ProjectName != "":
+        Columns = input('Project Column Names to be Created: ')
+    else:
+        Columns = ""
+    CsvSource = input('CSV Source (Use / for path separator): ')    
+elif len(argumentList) != 16 and len(argumentList) != 12:
+    print("Refer README for unattended usage. Supports only 6 or 8 arguments.")
+    choice = input("Enter \"Y\" to input values manually: ")
+    if (choice.upper() == "Y"):
+        PATToken = getpass('GitHub Token: ')
+        Organization = input('GitHub Organization: ')
+        RepoName = input('Repository Name: ')
+        Repository_Visibility = input('Repository Visibility: ')
+        RepoDescription = input('Add the Repository Description: ')
+        ProjectName = input('Project to be created for the Repository. Press ENTER if not required: ')
+        if ProjectName != "":
+            Columns = input('Project Column Names to be Created: ')
+        else:
+            Columns = ""
+        CsvSource = input('CSV Source (Use / for path separator): ')
+    else:
+        exit("Aborting.......")
+elif len(argumentList) == 16:
+    if set(["-t","-o","-r","-v","-d","-p","-c","-f"]) <= set(argumentList) or set(["--Token ", "--Organization ","--Repository ", "--Visibility ","--Description ","--Project ","--Columns ","--File "]) <= set(argumentList):
+        options = "t:o:r:v:d:p:c:f:"
+        long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","Project =","Columns =","File ="]
+        try:
+            arguments, values = getopt(argumentList, options, long_options)
+            for currentArgument, currentValue in arguments:
+                if currentArgument in ("-t", "--Token "):
+                    PATToken = currentValue                
+                elif currentArgument in ("-o", "--Organization "):
+                    Organization = currentValue               
+                elif currentArgument in ("-r", "--Repository "):
+                    RepoName = currentValue
+                elif currentArgument in ("-v", "--Visibility "):
+                    Repository_Visibility = currentValue
+                elif currentArgument in ("-d", "--Description "):
+                    RepoDescription = currentValue
+                elif currentArgument in ("-p", "--Project "):
+                    ProjectName = currentValue
+                elif currentArgument in ("-c", "--Columns "):
+                    Columns = currentValue
+                elif currentArgument in ("-f", "--File "):
+                    CsvSource = currentValue
+        except getopt.error as err:
+            print (str(err))
+    else:
+        print("Refer README for unattended usage. Proper arguments not provided.")
+        choice = input("Enter \"Y\" to input values manually: ")
+        if (choice.upper() == "Y"):
+            PATToken = getpass('GitHub Token: ')
+            Organization = input('GitHub Organization: ')
+            RepoName = input('Repository Name: ')
+            Repository_Visibility = input('Repository Visibility: ')
+            RepoDescription = input('Add the Repository Description: ')
+            ProjectName = input('Project to be created for the Repository. Press ENTER if not required: ')
+            if ProjectName != "":
+                Columns = input('Project Column Names to be Created: ')
+            else:
+                Columns =""
+            CsvSource = input('CSV Source (Use / for path separator): ')
+        else:
+            exit("Aborting.......")
 else:
-    options = "t:o:r:v:d:p:c:f:"
-    long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","Project =","Columns =","File ="]
-    try:
-        arguments, values = getopt(argumentList, options, long_options)
-        for currentArgument, currentValue in arguments:
-            if currentArgument in ("-t", "--Token "):
-                PATToken = currentValue                
-            elif currentArgument in ("-o", "--Organization "):
-                Organization = currentValue               
-            elif currentArgument in ("-r", "--Repository "):
-                RepoName = currentValue
-            elif currentArgument in ("-v", "--Visibility "):
-                Repository_Visibility = currentValue
-            elif currentArgument in ("-d", "--Description "):
-                RepoDescription = currentValue
-            elif currentArgument in ("-p", "--Project "):
-                ProjectName = currentValue
-            elif currentArgument in ("-c", "--Columns "):
-                Columns = currentValue
-            elif currentArgument in ("-f", "--File "):
-                CsvSource = currentValue
-    except getopt.error as err:
-        print (str(err))
-
+    if set(['-t','-o','-r','-v','-d','-f']) <= set(argumentList) or set(["--Token ", "--Organization ","--Repository ", "--Visibility ","--Description ","--File "]) <= set(argumentList):
+        options = "t:o:r:v:d:f:"
+        long_options = ["Token =", "Organization =","Repository =", "Visibility =","Description =","File ="]
+        Columns = None
+        ProjectName = None
+        try:
+            arguments, values = getopt(argumentList, options, long_options)
+            for currentArgument, currentValue in arguments:
+                if currentArgument in ("-t", "--Token "):
+                    PATToken = currentValue              
+                elif currentArgument in ("-o", "--Organization "):
+                    Organization = currentValue               
+                elif currentArgument in ("-r", "--Repository "):
+                    RepoName = currentValue
+                elif currentArgument in ("-v", "--Visibility "):
+                    Repository_Visibility = currentValue
+                elif currentArgument in ("-d", "--Description "):
+                    RepoDescription = currentValue
+                elif currentArgument in ("-f", "--File "):
+                    CsvSource = currentValue
+        except getopt.error as err:
+            print (str(err)) 
+    else: 
+        print("Refer README for unattended usage. Proper arguments not provided.")
+        choice = input("Enter \"Y\" to input values manually: ")
+        if (choice.upper() == "Y"):
+            PATToken = getpass('GitHub Token: ')
+            Organization = input('GitHub Organization: ')
+            RepoName = input('Repository Name: ')
+            Repository_Visibility = input('Repository Visibility: ')
+            RepoDescription = input('Add the Repository Description: ')
+            ProjectName = input('Project to be created for the Repository. Press ENTER if not required: ')
+            if ProjectName != "":
+                Columns = input('Project Column Names to be Created: ')
+            else:
+                Columns =""
+            CsvSource = input('CSV Source (Use / for path separator): ')
+        else:
+            exit("Aborting.......")
+           
 csvReader = DictReader(open(CsvSource))
 if Repository_Visibility == 'public':
     type = 'public'
