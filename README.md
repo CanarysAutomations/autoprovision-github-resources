@@ -1,6 +1,6 @@
 # Autoprovision ⚙ GitHub Resources
 
-The tool will communicate with the repositories and organizations of GitHub. The [exe](https://github.com/CanarysAutomations/autocreate-github-resources/releases) will be available for auto provision of GitHub resources with each release. This tool is intended to restrict manual labour as much as possible. The tool with the help of few inputs will  
+The tool will communicate with the repositories and organization apis of GitHub. This tool is intended to restrict manual labour as much as possible. With the help of few inputs the tool will  
 
 - **Create a repository**- An empty repository will be created
 
@@ -23,6 +23,7 @@ The endpoints used in the tool are GitHub's Rest API v3. A series of endpoints a
 - Admin access to the organization for creating the repositories
 - Excel File with Team Names and permissions
 - GitHub PAT Token must be authorized to access the required organization
+- python 3.9 must be installed
 
 ## Usage Instructions :memo:
 
